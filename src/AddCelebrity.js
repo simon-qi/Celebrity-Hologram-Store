@@ -32,6 +32,7 @@ class AddCelebrity extends React.Component {
         }} />
     }
 
+    const backLink = user.privilege === 'SUPERUSER' ? '/store' : '/';
     const required = value => (value ? undefined : 'Required');
     const mustBeNumber = value => (isNaN(value) || value % 1 !== 0 ? 'Must be a number' : undefined);
     const minValue = min => value =>
@@ -50,7 +51,7 @@ class AddCelebrity extends React.Component {
     };
 
     if (this.state.submitted === true) {
-      return <Redirect to='/' />
+      return <Redirect to={backLink} />
     }
 
     return <Styles><h1>Add Celebrity</h1><Form
@@ -108,7 +109,7 @@ class AddCelebrity extends React.Component {
             Submit
           </button>
 
-          <Link to="/">
+          <Link to={backLink}>
             <button type="submit">
               Back
             </button>

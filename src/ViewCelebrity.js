@@ -24,12 +24,15 @@ class ViewCelebrity extends React.Component {
   }
 
   render() {
-    if (!localStorage.getItem('user')) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
       return <Redirect to={{
             pathname: '/login',
             state: { message: null }
         }}  />
     }
+
+    const backLink = user.privilege === 'SUPERUSER' ? '/store' : '/';
 
     return <Styles><h1>View Celebrity</h1><Form
     onSubmit={() => {}}
@@ -55,7 +58,7 @@ class ViewCelebrity extends React.Component {
           <Field name="price" component="input" placeholder="Price" disabled="true" defaultValue={this.state.celebrity.price}/>
         </div>
 
-        <Link to="/">
+        <Link to={backLink}>
           <button type="submit">
             Back
           </button>
