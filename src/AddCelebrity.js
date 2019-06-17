@@ -18,8 +18,18 @@ class AddCelebrity extends React.Component {
   render() {
 
     let user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.privilege === 'READ') {
-      return <Redirect to='/login' />
+    if (!user) {
+      return <Redirect to={{
+            pathname: '/login',
+            state: { message: null }
+        }}  />
+    }
+
+    if (user.privilege === 'READ') {
+      return <Redirect to={{
+            pathname: '/login',
+            state: { message: 'You do not have permission to perform the action.' }
+        }} />
     }
 
     const required = value => (value ? undefined : 'Required');

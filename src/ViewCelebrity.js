@@ -25,7 +25,10 @@ class ViewCelebrity extends React.Component {
 
   render() {
     if (!localStorage.getItem('user')) {
-      return <Redirect to='/login' />
+      return <Redirect to={{
+            pathname: '/login',
+            state: { message: null }
+        }}  />
     }
 
     return <Styles><h1>View Celebrity</h1><Form

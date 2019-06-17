@@ -1,13 +1,21 @@
 import React from 'react';
 
-import { PrivateRoute } from './PrivateRoute';
 import HomePage from './HomePage';
+import { Redirect } from "react-router-dom";
 
 class App extends React.Component {
     render() {
-        return (
-            <PrivateRoute exact path="/" component={HomePage} />
-        );
+      let user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        return <Redirect to={{
+              pathname: '/login',
+              state: { message: null }
+          }}  />
+      }
+
+      return (
+          <HomePage />
+      );
     }
 }
 

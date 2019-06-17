@@ -96,7 +96,10 @@ class HomePage extends React.Component {
     return (
       <div className="home-page">
         <div className="logout">
-          <Link to="/login">Logout</Link>
+          <Link to={{
+                pathname: '/login',
+                state: { message: null }
+            }}>Logout</Link>
         </div>
         <h1>Celebrity Hologram Store</h1>
         <div><br></br></div>

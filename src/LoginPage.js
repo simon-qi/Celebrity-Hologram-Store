@@ -14,7 +14,8 @@ class LoginPage extends React.Component {
             password: '',
             submitted: false,
             loading: false,
-            error: ''
+            error: '',
+            message: this.props.location.state ? this.props.location.state.message : null
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,7 +42,7 @@ class LoginPage extends React.Component {
         userService.login(username, password)
             .then(
                 user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
+                    const { from } = { from: { pathname: "/" } };
                     this.props.history.push(from);
                 },
                 error => this.setState({ error, loading: false })
@@ -51,7 +52,11 @@ class LoginPage extends React.Component {
     render() {
         const { username, password, submitted, loading, error } = this.state;
         return (
-            <div className="col-md-6 centered">
+            <div className="col-md-4 centered">
+                {this.state.message ? <
+                  div className="alert alert-info">
+                    {this.state.message}
+                  </div> : null}
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
