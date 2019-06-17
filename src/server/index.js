@@ -10,8 +10,11 @@ const app = express();
 app.use(express.json({type: '*/*'}));
 app.use(favicon(path.join(__dirname, '../../build', 'favicon.ico')));
 app.use('/users', require('./users.controller'));
-app.use(basicAuth);
-app.use(errorHandler);
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use(basicAuth);
+    app.use(errorHandler);
+}
 
 // database connection
 const pool = new Pool({
