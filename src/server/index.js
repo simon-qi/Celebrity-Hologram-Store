@@ -4,6 +4,7 @@ const { Pool, Client } = require('pg')
 const basicAuth = require('./basic-auth');
 const errorHandler = require('./error-handler');
 const favicon = require('express-favicon');
+const path = require('path');
 
 const app = express();
 app.use(express.json({type: '*/*'}));
