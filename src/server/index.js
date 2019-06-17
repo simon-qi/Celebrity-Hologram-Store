@@ -1,13 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const pino = require('express-pino-logger')();
 const { Pool, Client } = require('pg')
 const basicAuth = require('./basic-auth');
 const errorHandler = require('./error-handler');
 
 const app = express();
 app.use(express.json({type: '*/*'}));
-app.use(pino);
 app.use('/users', require('./users.controller'));
 app.use(basicAuth);
 app.use(errorHandler);
