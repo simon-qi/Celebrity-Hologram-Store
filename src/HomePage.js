@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './HomePage.css';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';

@@ -16,10 +16,20 @@ class AddCelebrity extends React.Component {
   }
 
   render() {
+
     let user = JSON.parse(localStorage.getItem('user'));
     if (!user || user.privilege === 'READ') {
       return <Redirect to='/login' />
     }
+
+    const required = value => (value ? undefined : 'Required');
+    const mustBeNumber = value => (isNaN(value) ? 'Must be a number' : undefined);
+    const minValue = min => value =>
+    isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
+    const regex = /^\$?[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
+    const isCurrency = value => (regex.test(value) ? undefined : 'Must be a currency amount');
+    const composeValidators = (...validators) => value =>
+    validators.reduce((error, validator) => error || validator(value), undefined);
 
     const onSubmit = async values => {
       fetch('/api/add', {
@@ -37,25 +47,51 @@ class AddCelebrity extends React.Component {
     onSubmit={onSubmit}
     render={({ handleSubmit, pristine, invalid }) => (
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name&nbsp;</label>
-          <Field name="name" component="input" placeholder="Name" />
-        </div>
+        <Field name="name" validate={required}>
+          {({ input, meta }) => (
+            <div>
+              <label>Name</label>
+              <input {...input} type="text" placeholder="Name" />
+              {meta.error && meta.touched && <span>{meta.error}</span>}
+            </div>
+          )}
+        </Field>
 
-        <div>
-          <label>Age&nbsp;</label>
-          <Field name="age" component="input" placeholder="Age" />
-        </div>
+        <Field
+           name="age"
+           validate={composeValidators(required, mustBeNumber, minValue(0))}
+         >
+           {({ input, meta }) => (
+             <div>
+               <label>Age</label>
+               <input {...input} type="text" placeholder="Age" />
+               {meta.error && meta.touched && <span>{meta.error}</span>}
+             </div>
+           )}
+         </Field>
 
-        <div>
-          <label>Occupation&nbsp;</label>
-          <Field name="occupation" component="input" placeholder="Occupation" />
-        </div>
+        <Field name="occupation" validate={required}>
+          {({ input, meta }) => (
+            <div>
+              <label>Occupation</label>
+              <input {...input} type="text" placeholder="Occupation" />
+              {meta.error && meta.touched && <span>{meta.error}</span>}
+            </div>
+          )}
+        </Field>
 
-        <div>
-          <label>Price&nbsp;</label>
-          <Field name="price" component="input" placeholder="Price" />
-        </div>
+        <Field
+           name="price"
+           validate={composeValidators(required, isCurrency)}
+         >
+           {({ input, meta }) => (
+             <div>
+               <label>Price</label>
+               <input {...input} type="text" placeholder="Price" />
+               {meta.error && meta.touched && <span>{meta.error}</span>}
+             </div>
+           )}
+         </Field>
 
         <ButtonToolbar>
           <button type="submit" disabled={pristine || invalid}>

@@ -5,10 +5,9 @@ import App from './App';
 import AddCelebrity from './AddCelebrity';
 import EditCelebrity from './EditCelebrity';
 import ViewCelebrity from './ViewCelebrity';
-import HomePage from './HomePage';
 import LoginPage from './LoginPage';
 import * as serviceWorker from './serviceWorker';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 const routing = (
   <Router>
