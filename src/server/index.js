@@ -19,7 +19,8 @@ const pool = new Pool({
   host: 'localhost',
   database: 'postgres',
   password: 'password',
-  port: 5432
+  port: 5432,
+  connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL : null
 })
 
 app.get('/api/list', (req, res) => {
