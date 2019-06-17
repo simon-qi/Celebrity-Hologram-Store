@@ -90,7 +90,7 @@ app.delete('/api/delete', (req, res) => {
   res.sendStatus(200);
 });
 
-
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(__dirname + '../../../build'));
