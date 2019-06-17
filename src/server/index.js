@@ -7,7 +7,7 @@ const favicon = require('express-favicon');
 
 const app = express();
 app.use(express.json({type: '*/*'}));
-app.use(favicon(__dirname + '../../build/favicon.ico'));
+app.use(favicon(__dirname + '../../../build/favicon.ico'));
 app.use('/users', require('./users.controller'));
 app.use(basicAuth);
 app.use(errorHandler);
