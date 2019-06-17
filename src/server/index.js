@@ -8,7 +8,6 @@ const favicon = require('express-favicon');
 const app = express();
 app.use(express.json({type: '*/*'}));
 app.use(favicon(__dirname + '../../../build/favicon.ico'));
-app.use(express.static(__dirname + '../../../build'));
 app.use('/users', require('./users.controller'));
 app.use(basicAuth);
 app.use(errorHandler);
@@ -90,6 +89,16 @@ app.delete('/api/delete', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.sendStatus(200);
 });
+
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(__dirname + '../../../build'));
+// Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(__dirname + '../../../build/index.html');
+  });
+}
 
 app.listen(process.env.PORT || 3001, () =>
   console.log('Express server is running on localhost:3001')
