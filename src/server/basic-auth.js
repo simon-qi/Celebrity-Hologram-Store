@@ -4,7 +4,7 @@ module.exports = basicAuth;
 
 async function basicAuth(req, res, next) {
     // make authenticate path public
-    if (req.path === '/users/authenticate') {
+    if (req.originalUrl === '/users/authenticate') {
         return next();
     }
 
@@ -22,7 +22,11 @@ async function basicAuth(req, res, next) {
         return res.status(401).json({ message: 'Invalid Authentication Credentials' });
     } else {
       if (user.privilege === 'READ' &&
-      (req.path.startsWith('/api/add') || req.path.startsWith('/api/edit') || req.path.startsWith('/api/delete'))) {
+      (req.originalUrl.startsWith('/api/add') || req.originalUrl.startsWith('/api/edit') || req.originalUrl.startsWith('/api/delete'))) {
+        return res.status(401).json({ message: 'Invalid Authentication Credentials' });
+      }
+
+      if (user.privilege !== 'SUPERUSER' && req.originalUrl.startsWith('/users')) {
         return res.status(401).json({ message: 'Invalid Authentication Credentials' });
       }
     }

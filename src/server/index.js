@@ -9,6 +9,8 @@ const path = require('path');
 const app = express();
 app.use(express.json({type: '*/*'}));
 app.use(favicon(path.join(__dirname, '../../build', 'favicon.ico')));
+app.use('/users/*', basicAuth);
+app.use('/users/*', errorHandler);
 app.use('/users', require('./users.controller'));
 
 app.use('/api/*', basicAuth);

@@ -1,42 +1,42 @@
 import React from 'react';
-import './HomePage.css';
+import './AdminPage.css';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { Link } from 'react-router-dom'
 import { Form, Field } from 'react-final-form'
-import { authHeader } from './auth-header';
+import { authHeader } from '../auth-header';
 
-class HomePage extends React.Component {
+class AdminPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      celebrities: [],
+      users: [],
     };
 
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
-    fetch('/api/list', {
+    fetch('/users/list', {
       method: 'GET',
       headers: authHeader()
     }).then(response => response.json())
-      .then(state => this.setState({celebrities: state}));
+      .then(state => this.setState({users: state}));
   }
 
 
   handleDelete(id) {
-    fetch('/api/delete?id=' + id, {
+    fetch('/users/delete?id=' + id, {
       method: 'DELETE',
       headers: authHeader()
     }).then(response =>
-      fetch(`/api/list`, {
+      fetch(`/users/list`, {
         method: 'GET',
         headers: authHeader()
       }).then(response => response.json())
-        .then(state => this.setState({celebrities: state})));
+        .then(state => this.setState({users: state})));
   }
 
   render() {
@@ -46,21 +46,12 @@ class HomePage extends React.Component {
       id: 'id'
     },
     {
-      Header: 'Name',
-      accessor: 'name',
-      Cell: row => <Link to={'/view/' + row.row.id}>{row.row.name}</Link>
+      Header: 'Username',
+      accessor: 'username'
     },
     {
-      Header: 'Age',
-      accessor: 'age' // String-based value accessors!
-    },
-    {
-      Header: 'Occupation',
-      accessor: 'occupation' // String-based value accessors!
-    },
-    {
-      Header: 'Price',
-      accessor: 'price' // String-based value accessors!
+      Header: 'Privilege',
+      accessor: 'privilege' // String-based value accessors!
     }]
 
     let user = JSON.parse(localStorage.getItem('user'));
@@ -73,39 +64,39 @@ class HomePage extends React.Component {
       columns.push({
         id: 'edit',
         accessor: 'id',
-        Cell: ({value}) => (<Link to={'/edit/' + value}><Button variant="primary">Edit</Button></Link>)
+        Cell: ({value}) => (<Link to={'/edituser/' + value}><Button variant="primary">Edit</Button></Link>)
       });
     }
 
     const onSubmit = async values => {
-      fetch(`/api/get?id=` + values.search, {
+      fetch(`/users/get?id=` + values.search, {
         method: 'GET',
         headers: authHeader()
       }).then(response => response.json())
-        .then(state => this.setState({celebrities: state}));
+        .then(state => this.setState({users: state}));
     };
 
     const showAll = () => {
-      fetch(`/api/list`, {
+      fetch(`/users/list`, {
         method: 'GET',
         headers: authHeader()
       }).then(response => response.json())
-        .then(state => this.setState({celebrities: state}));
+        .then(state => this.setState({users: state}));
     }
 
-    const mustBeNumber = value => (isNaN(value) || value % 1 !== 0 ? 'Must be a number' : undefined);
+    const mustBeNumber = value => (isNaN(value) || value % 1 !== 0  ? 'Must be a number' : undefined);
 
     return (
       <div className="home-page">
         <div className="logout">
-          {user.privilege === 'SUPERUSER' ? <Link to='/'>Go To Users Page</Link> : null}
+          <Link to="store">Go To Store</Link>
           &nbsp;&nbsp;&nbsp;
           <Link to={{
                 pathname: '/login',
                 state: { message: null }
             }}>Logout</Link>
         </div>
-        <h1>Celebrity Hologram Store</h1>
+        <h1>User Maintenance Page</h1>
         <div><br></br></div>
         <Form
           onSubmit={onSubmit}
@@ -127,13 +118,13 @@ class HomePage extends React.Component {
         />
         <button onClick={() => showAll()}>Show All</button>
         {user.privilege !== 'READ' ? <ButtonToolbar className="add-button">
-          <Link to="/add">
-            <Button variant="primary">Add Celebrity</Button>
+          <Link to="/adduser">
+            <Button variant="primary">Add User</Button>
           </Link>
         </ButtonToolbar> : null}
         <div><br></br></div>
         <ReactTable
-          data={this.state.celebrities}
+          data={this.state.users}
           columns={columns}
           className="-striped -highlight"
         />
@@ -142,4 +133,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+export default AdminPage;

@@ -16,5 +16,6 @@ CREATE TABLE account (
 );
 
 INSERT INTO account(username, password, privilege) VALUES
+('admin', 'test', 'SUPERUSER'),
 ('ABC', 'test', 'READ'),
 ('XYZ', 'test', 'READWRITE');

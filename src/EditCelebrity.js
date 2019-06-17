@@ -41,7 +41,7 @@ class EditCelebrity extends React.Component {
     }
 
     const required = value => (value ? undefined : 'Required');
-    const mustBeNumber = value => (isNaN(value) ? 'Must be a number' : undefined);
+    const mustBeNumber = value => (isNaN(value) || value % 1 !== 0  ? 'Must be a number' : undefined);
     const minValue = min => value =>
     isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
     const regex = /^\$?[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
