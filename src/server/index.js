@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const { Pool, Client } = require('pg')
 const basicAuth = require('./basic-auth');
 const errorHandler = require('./error-handler');
+const favicon = require('express-favicon');
 
 const app = express();
 app.use(express.json({type: '*/*'}));
+app.use(favicon(__dirname + '../../build/favicon.ico'));
 app.use('/users', require('./users.controller'));
 app.use(basicAuth);
 app.use(errorHandler);
