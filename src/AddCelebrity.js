@@ -61,9 +61,9 @@ class AddCelebrity extends React.Component {
         <Field name="name" validate={required}>
           {({ input, meta }) => (
             <div>
+              {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
               <label>Name</label>
               <input {...input} type="text" placeholder="Name" />
-              {meta.error && meta.touched && <span>{meta.error}</span>}
             </div>
           )}
         </Field>
@@ -74,9 +74,9 @@ class AddCelebrity extends React.Component {
          >
            {({ input, meta }) => (
              <div>
-               <label>Age</label>
-               <input {...input} type="text" placeholder="Age" />
-               {meta.error && meta.touched && <span>{meta.error}</span>}
+               {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
+                 <label>Age</label>
+                 <input {...input} type="text" placeholder="Age" />
              </div>
            )}
          </Field>
@@ -84,9 +84,9 @@ class AddCelebrity extends React.Component {
         <Field name="occupation" validate={required}>
           {({ input, meta }) => (
             <div>
+              {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
               <label>Occupation</label>
               <input {...input} type="text" placeholder="Occupation" />
-              {meta.error && meta.touched && <span>{meta.error}</span>}
             </div>
           )}
         </Field>
@@ -97,14 +97,14 @@ class AddCelebrity extends React.Component {
          >
            {({ input, meta }) => (
              <div>
+               {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
                <label>Price</label>
                <input {...input} type="text" placeholder="Price" />
-               {meta.error && meta.touched && <span>{meta.error}</span>}
              </div>
            )}
          </Field>
 
-        <ButtonToolbar>
+        <ButtonToolbar className="buttons">
           <button type="submit" disabled={pristine || invalid}>
             Submit
           </button>

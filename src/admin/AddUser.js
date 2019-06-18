@@ -32,7 +32,6 @@ class AddUser extends React.Component {
         }} />
     }
 
-    const required = value => (value ? undefined : 'Required');
 
     const onSubmit = async values => {
       console.log(JSON.stringify(values));
@@ -47,26 +46,53 @@ class AddUser extends React.Component {
       return <Redirect to='/' />
     }
 
+    const required = value => (value ? undefined : 'Required');
+
     return <Styles><h1>Add User</h1><Form
+    validate={values => {
+        const errors = {};
+        if (!values.username) {
+          errors.username = "Required";
+        }
+        if (!values.password) {
+          errors.password = "Required";
+        }
+        if (!values.confirmPassword) {
+          errors.confirmPassword = "Required";
+        } else if (values.confirmPassword !== values.password) {
+          errors.confirmPassword = "Passwords must match";
+        }
+        return errors;
+      }}
     onSubmit={onSubmit}
     render={({ handleSubmit, pristine, invalid }) => (
       <form onSubmit={handleSubmit}>
-        <Field name="username" validate={required}>
+        <Field name="username">
           {({ input, meta }) => (
             <div>
+              {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
               <label>Username</label>
               <input {...input} type="text" placeholder="Username" />
-              {meta.error && meta.touched && <span>{meta.error}</span>}
             </div>
           )}
         </Field>
 
-        <Field name="password" validate={required}>
+        <Field name="password">
           {({ input, meta }) => (
             <div>
+              {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
               <label>Password</label>
               <input {...input} type="password" placeholder="Password" />
-              {meta.error && meta.touched && <span>{meta.error}</span>}
+            </div>
+          )}
+        </Field>
+
+        <Field name="confirmPassword">
+          {({ input, meta }) => (
+            <div>
+              {meta.error && meta.touched && <div class="errorMessage">{meta.error}</div>}
+              <label>Confirm Password</label>
+              <input {...input} type="password" placeholder="Confirm password" />
             </div>
           )}
         </Field>
@@ -81,7 +107,7 @@ class AddUser extends React.Component {
           </Field>
         </div>
 
-        <ButtonToolbar>
+        <ButtonToolbar className="buttons">
           <button type="submit" disabled={pristine || invalid}>
             Submit
           </button>
